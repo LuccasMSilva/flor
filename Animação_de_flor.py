@@ -17,6 +17,7 @@ STEM_SECONDS = 1.2
 LEAF_SECONDS = 1.0
 BLOOM_SECONDS = 3.0
 FINAL_SWAY_SECONDS = 6.0
+ROTATE_DEG_PER_SEC = 5.0
 
 STEM_FRAMES = int(FPS * STEM_SECONDS)
 LEAF_FRAMES = int(FPS * LEAF_SECONDS)
@@ -69,7 +70,7 @@ def draw_stem(progress):
     stem_t.pensize(8)
     length = 260
     drawn = int(length * progress)
-    #  crescimento
+    
     stem_t.penup()
     stem_t.home()
     stem_t.setheading(270)
@@ -171,7 +172,9 @@ for frame in range(TOTAL_FRAMES + 1):
         if sway_phase > 0:
             sway = 4.0 * math.sin((sway_phase / FPS) * 2.0 + i * 0.3)
         hue = (i / PETALS) * 0.9
-        draw_petal_at(360 * i / PETALS, local_scale, hue, sway)
+        
+        rotation_global = ROTATE_DEG_PER_SEC * (frame / FPS)
+        draw_petal_at(360 * i / PETALS + rotation_global, local_scale, hue, sway)
 
     center_local = clamp(bloom_phase / BLOOM_FRAMES)
     draw_center(0.2 + 0.8 * ease_out_cubic(center_local))
@@ -184,7 +187,8 @@ for frame in range(TOTAL_FRAMES + 1):
         for i in range(PETALS):
             hue = (i / PETALS) * 0.9
            
-            draw_petal_at(360 * i / PETALS, 1.0, hue, sway_global + 2.0 * math.sin(frame * 0.06 + i))
+            rotation_global = ROTATE_DEG_PER_SEC * (frame / FPS)
+            draw_petal_at(360 * i / PETALS + rotation_global, 1.0, hue, sway_global + 2.0 * math.sin(frame * 0.06 + i))
 
         pulse = 1.0 + 0.03 * math.sin(frame * 0.12)
         draw_center(pulse)
@@ -201,7 +205,9 @@ draw_leaf(1.0, side=-1)
 draw_leaf(1.0, side=1)
 for i in range(PETALS):
     hue = (i / PETALS) * 0.9
-    draw_petal_at(360 * i / PETALS, 1.0, hue, 0.0)
+   
+    rotation_global = ROTATE_DEG_PER_SEC * (frame / FPS)
+    draw_petal_at(360 * i / PETALS + rotation_global, 1.0, hue, 0.0)
 draw_center(1.0)
 
 screen.update()
