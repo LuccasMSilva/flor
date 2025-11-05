@@ -30,7 +30,7 @@ screen.bgcolor("black")
 screen.colormode(1.0)
 screen.tracer(0, 0)
 
-# turtles
+
 stem_t = Turtle()
 petal_t = Turtle()
 center_t = Turtle()
